@@ -1,0 +1,698 @@
+/*
+ * NOVA Base Styles
+ * Clean, calm, premium foundation — Linear × Raycast × Arc aesthetic.
+ *
+ * Design principles:
+ *   - Monochrome/neutral base with restrained accent pops
+ *   - Subtle micro-interactions (150-200ms ease-out)
+ *   - Generous whitespace, optical margin alignment
+ *   - Consistent corner radius (6/10/14/20 scale)
+ *   - Typography hierarchy with -0.02em tracking on headings
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Smooth, system-wide transitions ===== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizelegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family-sans);
+    background: hsl(var(--background));
+    color: hsl(var(--text-primary));
+    line-height: var(--line-height-normal, 1.5);
+    font-feature-settings: "ligatures" 1;
+  }
+
+  #root,
+  #nova-root {
+    min-height: 100vh;
+    font-feature-settings: "ligatures" 1;
+  }
+
+  /* ===== Custom scrollbar — hairline, fades to transparent ===== */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border) / 0.5);
+    border-radius: var(--radius-full);
+    transition: background 150ms ease, opacity 150ms ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--border) / 0.7);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: hsl(var(--border));
+  }
+
+  /* ===== Selection highlight ===== */
+  ::selection {
+    background: hsl(var(--accent) / 0.2);
+    color: hsl(var(--text-primary));
+  }
+
+  /* ===== Premium focus ring — Apple-style ===== */
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius-sm) - 2px);
+  }
+
+  /* ===== Smooth text rendering for new tab ===== */
+  .nova-blur {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ===== Typography system ===== */
+@layer components {
+  .nova-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .nova-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .nova-subheading {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .nova-body {
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .nova-caption {
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  .nova-mono {
+    font-family: var(--font-family-mono);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  /* ===== Container ===== */
+  .nova-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* ===== Card / Surface ===== */
+  .nova-card {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+    overflow: hidden;
+  }
+
+  .nova-card:hover {
+    border-color: hsl(var(--border-hover));
+    box-shadow: var(--shadow-popover);
+  }
+
+  .nova-card-interactive {
+    transition: all 200ms cubic-bezier(0.25, 0.05, 0.25, 1);
+    cursor: pointer;
+  }
+
+  .nova-card-interactive:hover {
+    transform: translateY(-1px);
+    border-color: hsl(var(--accent) / 0.3);
+  }
+
+  .nova-popover {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-popover);
+  }
+
+  .nova-panel {
+    background: hsl(var(--background-tertiary));
+    border-radius: var(--radius-md);
+    transition: background 150ms ease;
+  }
+
+  .nova-surface {
+    background: hsl(var(--surface));
+    border-radius: var(--radius-md);
+  }
+
+  /* ===== Button system ===== */
+  .nova-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 150ms cubic-bezier(0.25, 0.05, 0.25, 1);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ripple effect on click — very subtle */
+  .nova-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), hsl(var(--text-primary) / 0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+  }
+
+  .nova-btn:active::after {
+    opacity: 1;
+  }
+
+  .nova-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .nova-btn-primary {
+    background: hsl(var(--accent));
+    color: white;
+    border-color: hsl(var(--accent));
+    box-shadow: 0 1px 3px hsl(var(--accent) / 0.25);
+  }
+
+  .nova-btn-primary:hover {
+    background: hsl(var(--accent-hover));
+    border-color: hsl(var(--accent-hover));
+    box-shadow: 0 2px 8px hsl(var(--accent) / 0.3);
+    transform: translateY(-0.5px);
+  }
+
+  .nova-btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .nova-btn-secondary {
+    background: transparent;
+    color: hsl(var(--text-primary));
+    border-color: hsl(var(--border));
+  }
+
+  .nova-btn-secondary:hover {
+    background: hsl(var(--surface-hover));
+    border-color: hsl(var(--border-hover));
+  }
+
+  .nova-btn-ghost {
+    background: transparent;
+    color: hsl(var(--text-secondary));
+    border-color: transparent;
+  }
+
+  .nova-btn-ghost:hover {
+    background: hsl(var(--surface-hover));
+    color: hsl(var(--text-primary));
+  }
+
+  .nova-btn-danger {
+    background: transparent;
+    color: hsl(var(--danger, 0 80% 55%));
+    border-color: transparent;
+  }
+
+  .nova-btn-danger:hover {
+    background: hsl(var(--danger, 0 80% 55%) / 0.1);
+    color: hsl(var(--danger, 0 80% 55%));
+  }
+
+  .nova-btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .nova-btn-md {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .nova-btn-lg {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .nova-btn-square {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+  }
+
+  .nova-btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* ===== Input system ===== */
+  .nova-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-sm);
+    background: hsl(var(--surface));
+    color: hsl(var(--text-primary));
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 150ms ease;
+    background-image: none;
+  }
+
+  .nova-input:focus-within {
+    border-color: hsl(var(--accent));
+    box-shadow: 0 0 0 2px hsl(var(--accent) / 0.12);
+  }
+
+  .nova-input:focus {
+    border-color: hsl(var(--accent));
+    box-shadow: 0 0 0 2px hsl(var(--accent) / 0.12);
+  }
+
+  .nova-input::placeholder {
+    color: hsl(var(--text-tertiary));
+  }
+
+  .nova-input-underline {
+    width: 100%;
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid hsl(var(--border));
+    background: transparent;
+    color: hsl(var(--text-primary));
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 150ms ease;
+    border-radius: 0;
+    padding-left: 0;
+  }
+
+  .nova-input-underline:focus {
+    border-bottom-color: hsl(var(--accent));
+  }
+
+  /* ===== Links ===== */
+  .nova-link {
+    color: hsl(var(--accent));
+    text-decoration: none;
+    transition: color 150ms ease;
+    font-weight: 500;
+  }
+
+  .nova-link:hover {
+    color: hsl(var(--accent-hover));
+  }
+
+  /* ===== Badges ===== */
+  .nova-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .nova-badge-sm {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .nova-badge-neutral {
+    background: hsl(var(--background-tertiary));
+    color: hsl(var(--text-secondary));
+  }
+
+  .nova-badge-accent {
+    background: hsl(var(--accent) / 0.15);
+    color: hsl(var(--accent));
+  }
+
+  .nova-badge-outline {
+    background: transparent;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--text-secondary));
+  }
+
+  .nova-badge-soft {
+    background: hsl(var(--accent) / 0.1);
+    color: hsl(var(--accent));
+    border: 1px solid hsl(var(--accent) / 0.2);
+  }
+
+  /* ===== Dividers ===== */
+  .nova-divider {
+    border: none;
+    border-top: 1px solid hsl(var(--border));
+    width: 100%;
+    margin: 0;
+  }
+
+  /* ===== List items ===== */
+  .nova-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 150ms ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nova-list-item:hover {
+    background: hsl(var(--surface-hover));
+  }
+
+  .nova-list-item:focus-visible {
+    background: hsl(var(--surface-hover));
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: -2px;
+  }
+
+  .nova-list-item-selected {
+    background: hsl(var(--accent) / 0.08);
+  }
+
+  .nova-list-item-selected:hover {
+    background: hsl(var(--accent) / 0.12);
+  }
+
+  /* ===== Toggle switch ===== */
+  .nova-toggle {
+    position: relative;
+    display: inline-flex;
+    horiz-align: flex-start;
+    width: 36px;
+    height: 20px;
+  }
+
+  .nova-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .nova-toggle .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    border-radius: var(--radius-full);
+    transition: 0.15s ease;
+    background: hsl(var(--background-tertiary));
+  }
+
+  .nova-toggle .slider::before {
+    content: "";
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    border-radius: var(--radius-full);
+    background: white;
+    transition: 0.15s ease;
+  }
+
+  .nova-toggle input:checked + .slider {
+    background: hsl(var(--accent));
+  }
+
+  .nova-toggle input:checked + .slider::before {
+    transform: translateX(16px);
+  }
+
+  /* ===== Animation helpers ===== */
+  .nova-enter {
+    opacity: 0;
+    animation: novaFadeIn 0.15s cubic-bezier(0.25, 0.05, 0.25, 1) forwards;
+  }
+
+  .nova-enter-delay-50 {
+    opacity: 0;
+    animation: novaFadeIn 0.15s cubic-bezier(0.25, 0.05, 0.25, 1) 50ms forwards;
+  }
+
+  .nova-enter-delay-100 {
+    opacity: 0;
+    animation: novaFadeIn 0.15s cubic-bezier(0.25, 0.05, 0.25, 1) 100ms forwards;
+  }
+
+  .nova-enter-delay-150 {
+    opacity: 0;
+    animation: novaFadeIn 0.15s cubic-bezier(0.25, 0.05, 0.25, 1) 150ms forwards;
+  }
+
+  .nova-enter-delay-200 {
+    opacity: 0;
+    animation: novaFadeIn 0.15s cubic-bezier(0.25, 0.05, 0.25, 1) 200ms forwards;
+  }
+
+  @keyframes novaFadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ===== Smooth scroll ===== */
+  .nova-scroll-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ===== Empty states ===== */
+  .nova-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    text-align: center;
+  }
+
+  .nova-empty__icon {
+    margin-bottom: 0.75rem;
+    opacity: 0.3;
+  }
+
+  .nova-empty__title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: hsl(var(--text-secondary));
+    margin-bottom: 0.25rem;
+  }
+
+  .nova-empty__description {
+    font-size: 0.8rem;
+    color: hsl(var(--text-tertiary));
+  }
+
+  /* ===== Section header ===== */
+  .nova-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .nova-section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--text-tertiary));
+  }
+
+  .nova-section-action {
+    opacity: 0.6;
+    transition: opacity 150ms ease;
+  }
+
+  .nova-section-action:hover {
+    opacity: 1;
+  }
+
+  /* ===== KBD (keyboard shortcut display) ===== */
+  .nova-kbd {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-family-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.125rem 0.4rem;
+    border-radius: calc(var(--radius-sm) - 1px);
+    background: hsl(var(--background-tertiary));
+    color: hsl(var(--text-tertiary));
+    border: 1px solid hsl(var(--border));
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== Loading spinner ===== */
+  .nova-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid hsl(var(--border));
+    border-top-color: hsl(var(--accent));
+    border-radius: var(--radius-full);
+    animation: novaSpin 0.8s linear infinite;
+  }
+
+  .nova-spinner-sm {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .nova-spinner-lg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @keyframes novaSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ===== Error boundary (CSS instead of JS injection) ===== */
+  .nova-error-boundary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: 2rem;
+  }
+
+  .nova-error-content {
+    text-align: center;
+    max-width: 400px;
+  }
+
+  .nova-error-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .nova-error-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .nova-error-message {
+    color: hsl(var(--text-secondary));
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ===== Tooltip ===== */
+  .nova-tooltip {
+    position: relative;
+    cursor: help;
+  }
+
+  .nova-tooltip .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--radius-sm);
+    background: hsl(var(--surface));
+    color: hsl(var(--text-primary));
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 150ms ease, visibility 150ms ease;
+    box-shadow: var(--shadow-popover);
+    border: 1px solid hsl(var(--border));
+    z-index: 100;
+  }
+
+  .nova-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* ===== Modal / Dialog ===== */
+  .nova-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .nova-modal {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-popover);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
